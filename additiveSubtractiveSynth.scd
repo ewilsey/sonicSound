@@ -37,6 +37,8 @@ Additive and Subtractive Synthesis
 Subtractive Synthesis
 */
 
+
+//various types of input noise
 ({
 	var sig;
 
@@ -52,14 +54,27 @@ Subtractive Synthesis
 ({
 	var sig;
 	sig= PinkNoise.ar(MouseY.kr(0, 0.707));
-	sig = LPF.ar( sig; freq: MouseX.kr( 100, 20000));
+	sig = LPF.ar( sig, freq: MouseX.kr( 100, 20000));
 }.play;)  //wind and or water
 
 
 //resonant lowpass filter
+//notice how low 'q' creates a more distinguished resonant freq!
 ({
 	var sig;
-	sig= PinkNoise.ar( 0.707));
-sig = RLPF.ar( sig; freq: MouseX.kr( 100, 18000).poll(label:\freq), rq:
+	sig= PinkNoise.ar( 0.707);
+	sig = RLPF.ar( sig, freq: MouseX.kr( 100, 18000).poll(label:\freq), rq:
 	MouseY.kr(0.001,0.99).poll(label: \rq) );
 }.play;)
+
+
+({
+	var sig;
+
+	sig= PinkNoise.ar( 0.707 );
+	sig = Resonz.ar( sig, freq: MouseX.kr( 100, 10000).poll(label:\freq), bwr:
+		MouseY.kr(0.001,10).poll(label: \bwr) );
+}.play;)
+
+
+
