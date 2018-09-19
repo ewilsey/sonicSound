@@ -41,16 +41,25 @@ Subtractive Synthesis
 	var sig;
 
 	//sig = WhiteNoise.ar(0.707);
-	//sig = PinkNoise.ar(0.707);  //testing and noise based creations
-	//sig = BrownNoise.ar(0.707);
+	//sig = PinkNoise.ar(0.707);  //testing and noise based creations per more organic sound
+	//sig = BrownNoise.ar(0.707); // even more ocean-y
 	//sig = GrayNoise.ar(0.707);
 	//sig = ClipNoise.ar(0.707);
 }.play;)
 
-//wind and or water
+
 
 ({
 	var sig;
 	sig= PinkNoise.ar(MouseY.kr(0, 0.707));
 	sig = LPF.ar( sig; freq: MouseX.kr( 100, 20000));
+}.play;)  //wind and or water
+
+
+//resonant lowpass filter
+({
+	var sig;
+	sig= PinkNoise.ar( 0.707));
+sig = RLPF.ar( sig; freq: MouseX.kr( 100, 18000).poll(label:\freq), rq:
+	MouseY.kr(0.001,0.99).poll(label: \rq) );
 }.play;)
