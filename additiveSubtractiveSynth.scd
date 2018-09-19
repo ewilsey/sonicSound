@@ -46,3 +46,11 @@ Subtractive Synthesis
 	//sig = GrayNoise.ar(0.707);
 	//sig = ClipNoise.ar(0.707);
 }.play;)
+
+//wind and or water
+
+({
+	var sig;
+	sig= PinkNoise.ar(MouseY.kr(0, 0.707));
+	sig = LPF.ar( sig; freq: MouseX.kr( 100, 20000));
+}.play;)
