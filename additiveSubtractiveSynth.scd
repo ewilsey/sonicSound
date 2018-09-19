@@ -17,7 +17,7 @@ Additive and Subtractive Synthesis
 	Out.ar( 0, outSig );
 }.play;)
 
-//
+//Square wave: Add up n harmonics with amplitude falling off as 1/ harmonicnumber, sign alternates etween +1 and -1
 (
 {
 
@@ -32,3 +32,17 @@ Additive and Subtractive Synthesis
 }.scope;
 
 )
+
+/*
+Subtractive Synthesis
+*/
+
+({
+	var sig;
+
+	//sig = WhiteNoise.ar(0.707);
+	//sig = PinkNoise.ar(0.707);  //testing and noise based creations
+	//sig = BrownNoise.ar(0.707);
+	//sig = GrayNoise.ar(0.707);
+	//sig = ClipNoise.ar(0.707);
+}.play;)
