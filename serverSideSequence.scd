@@ -19,3 +19,36 @@
 	sig=sig.clip(1,2);
 	Out.ar(5,sig);
 }.play)
+
+
+// Clock Ugens
+
+// impulse is a steady sample generator (steady meaning equal time between impulses)
+({
+	var sig;
+	sig=Impulse.ar(MouseX.kr(0,100), mul:0.7);
+
+	Out.ar(0, sig!2);
+
+}.play;)
+
+
+//band limited impulse generator
+({
+	var sig;
+
+	sig=Blip.ar(MouseX.kr(0,100).poll, numharm: MouseY.kr(0,2000).poll, mul: 0.7);
+	Out.ar(0,sig!2);
+}.play;)
+
+
+//Dust
+//dust is an impulse generator that creates x-number of impulse per second.
+// these are not periodic
+
+({
+	var sig;
+
+	sig= Dust.ar(MouseX.kr(0,1000).poll, mul:0.7);
+	Out.ar(0, sig!2);
+}.play;)
