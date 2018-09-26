@@ -72,3 +72,33 @@
 
 	Out.ar(0, sig!2);
 }.play)
+
+
+//envelopes Revisited
+//twinkle twinkle
+({
+	var sig, noteEnv;
+	noteEnv = Env.new(
+		[60,60,0,0,60,60,0,0,67,67,0,0,67,67,0,0],
+		[3, 0, 1,0, 3, 0,1,0, 3, 0,1,0, 3, 0,1]*0.2
+	);
+	noteEnv= EnvGen.kr( noteEnv ).poll;
+
+	sig=SinOsc.ar( noteEnv.midicps, mul:0.7);
+}.play;)
+
+({
+	var sig,env;
+	env= Env.new(
+
+		[0,1,0.3,0.7,0],
+		[0.3,0.1,0.5,0.5],
+		curve:[4,-4,4,-4],
+		releaseNode:2
+
+	);
+	env= EnvGen.kr(env,gate:MouseX.kr(-1,1).poll).poll;
+	sig = LFTri.ar(60.midicps, mul:env* 0.7);
+	Out.ar(0,sig!2);
+
+}.play;)
