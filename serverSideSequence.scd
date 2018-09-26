@@ -52,3 +52,23 @@
 	sig= Dust.ar(MouseX.kr(0,1000).poll, mul:0.7);
 	Out.ar(0, sig!2);
 }.play;)
+
+
+//LFNoise;
+//creates low freq noise values
+//0-step
+//1-linear ramp
+//2 - exp ramp
+
+({
+	var freq, sig;
+
+
+	//freq= LFNoise0.ar(1).poll;
+	//freq= LFNoise1.ar(1).poll;
+	//freq= LFNoise2.ar(1).poll;
+
+	sig=SinOsc.ar(freq, mul:0.7);
+
+	Out.ar(0, sig!2);
+}.play)
