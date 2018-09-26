@@ -102,3 +102,19 @@
 	Out.ar(0,sig!2);
 
 }.play;)
+
+//holy shit hahahahaha
+({
+	var in, sig, dT;
+
+	in = SoundIn.ar(0);
+	sig = CombC.ar(
+		in,
+		maxdelaytime:10,
+		delaytime:MouseX.kr(0,0.1).poll,
+		decaytime:MouseY.kr(0,1000).poll
+	)+ in;
+	sig = Limiter.ar (sig, 0.9);
+
+	Out.ar(0,sig!2);
+}.play;)
