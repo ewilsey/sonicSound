@@ -219,7 +219,7 @@ Env
 	Out.ar(0, sig!2);
 }.play;)
 
-// Custom Envs
+// Custom Envs (Does not seem to end, have not adujusted from MM example.)
 
 (
 a = {
