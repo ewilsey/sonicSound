@@ -86,13 +86,6 @@
 )
 
 
-
-
-
-
-
-
-
 // We can use envelopes to drive short time frames as well
 // look at Decay
 
@@ -122,7 +115,7 @@
 	var sig, env;
 
 	env = Linen.kr(
-		// gate: Line.kr(1,0,0.01),
+		//gate: Line.kr(1,0,0.01),
 		gate: MouseButton.kr(0,1,0),
 		attackTime: 0.1,
 		susLevel: 0.707,
