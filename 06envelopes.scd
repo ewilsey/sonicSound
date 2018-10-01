@@ -199,7 +199,7 @@ Env
 
 
 
-// ADSR
+// ADSR (Sounds kind of like a xylophone maybe?)I like this one.
 ({
 	var sig, env;
 
@@ -214,7 +214,7 @@ Env
 	env = EnvGen.kr(env, gate: MouseButton.kr(0,1,0), levelScale: 0.707 );
 
 
-	sig = SinOsc.ar(400) * env;
+	sig = SinOsc.ar(200) * env;
 
 	Out.ar(0, sig!2);
 }.play;)
