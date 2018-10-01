@@ -1,4 +1,4 @@
-// Amplitude mod example 1
+// Amplitude mod example 1 SCI-FI potential here.
 (
 {
 	SinOsc.ar( MouseX.kr(80, 320) ) *
@@ -8,7 +8,7 @@
 
 
 
-// Frequency Modulation (FM) Example 1
+// Frequency Modulation (FM) Example 1 SCI-FI weapon potential. Keep short -> Somewhat annoying.
 (
 {
 	// a carrier frequency is multiplied by a modulation frequency
@@ -16,19 +16,16 @@
 }.play;
 )
 
+// a carrier frequency is multiplied by a modulation frequency
 
+// This top Example has Too-Much Modulation  (DO NOT USE) It Sounds bad.
+({
+	SinOsc.ar( SinOsc.ar(200, mul: 50, add: 100) + (SinOsc.ar(MouseX.kr(0, 100).poll, mul: 0.5) * SinOsc.ar(40, mul: 50, add: 50) ) ) ;}.play;)
 
-// Too-Much Modulation Example (DO NOT USE)
+// Better modulation example
 (
 {
-	// a carrier frequency is multiplied by a modulation frequency
-	SinOsc.ar( SinOsc.ar(200, mul: 50, add: 100) + (SinOsc.ar(MouseX.kr(0, 100).poll, mul: 0.5) * SinOsc.ar(40, mul: 50, add: 50) ) ) ;
-}.play;
-)
-
-(
-{
-	SinOsc.ar(400) * SinOsc.ar(100, mul: 0.5, add: 0.5)
+	SinOsc.ar(200) * SinOsc.ar(100, mul: 0.5, add: 0.5)
 }.play;
 )
 
@@ -66,7 +63,7 @@ c // <- execute this line to get back the value in c
 ~myVar = "Michael Musick is tired";
 ~myVar
 
-// Use a env variable to store a synth instance
+// Use an env variable to store a synth instance
 (
 a = {
 	arg carrFreq = 400;
@@ -109,7 +106,7 @@ a.dump
 )
 
 
-// sep left/right
+// sep left/right (Loud)
 (
 {
 	var left, right;
@@ -139,7 +136,7 @@ a.dump
 }.play;
 )
 
-// correct way of handling panning
+// correct way of handling panning (FUN) Might be able to use?
 (
 {
 	var sig;
