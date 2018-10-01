@@ -1,17 +1,16 @@
- /* First day basics, more on class repository. This is a block comment */
+ /* Notes from 01 and 02 in-class repository */
 
 //hello World w/ Input Arguments
 "Hello World!".postln;
 
 // a sine wave w/ freq-> 200Hz
-{ SinOsc.ar( freq: 200, mul: 1.0 ) }.play;
+{ SinOsc.ar( freq: 200, mul: 1.0 ) }.play; /* 'mul' is a multiplier to the output signal.
+
+ Almost all ugens (unit generators) and processing units have an optional mul argument. */
+
 
 // simple amplitude modulation
-{ SinOsc.ar( freq: 200 ) * SinOsc.kr(0.5).poll }.play;
-
-// 'mul' is a multiplier to the output signal.
-
-// almost all ugens (unit generators) and processing units have a mul argument optional
+{ SinOsc.ar( freq: 80 ) * SinOsc.kr(0.5).poll }.play;
 
 // Poll mouse X UGen to the post window
 { MouseX.kr.poll }.play;
