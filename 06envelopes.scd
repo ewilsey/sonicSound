@@ -410,3 +410,9 @@ a.dump
 
 	Out.ar(0,sig!2);
 }.play;)
+
+
+//hw fix
+
+//env= Xline.kr(2.0,1,10)-1;
+env=Env.new([2,1,1]);
