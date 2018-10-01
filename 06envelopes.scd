@@ -68,7 +68,7 @@
 )
 
 
-// applied to freq
+// applied to freq (Might make a good intro?)
 (
 {
 	var sig, freq1, freq2;
