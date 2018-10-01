@@ -73,8 +73,8 @@
 {
 	var sig, freq1, freq2;
 
-	freq1 = Line.kr( start: 400, end: 200, dur: 4 );
-	freq2 = XLine.kr( start: 400, end: 200, dur: 4 );
+	freq1 = Line.kr( start: 400, end: 20, dur: 4 );
+	freq2 = XLine.kr( start: 400, end: 20, dur: 4 );
 
 	sig = SinOsc.ar( [freq1, freq2] );
 	sig.size.postln;
@@ -114,7 +114,7 @@
 
 
 	Out.ar(0, sig!2);
-}.play;)
+}.play;) //why is this inconsistent?
 
 // Linear Envelopes (or envelopes over time)
 
