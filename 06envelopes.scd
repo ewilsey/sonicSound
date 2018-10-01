@@ -244,10 +244,7 @@ a = {
 a.set(\gate, 0)
 
 
-
-
-
-////////
+//////// Makes button push do a sci-fi fade-out.
 
 (
 a = {
@@ -281,6 +278,7 @@ a.dump
 		sustainTime: 1,
 		releaseTime: 0.5,
 		curve: 0
+
 	);
 
 	env = EnvGen.kr(env, gate: 1, levelScale: 0.1, doneAction: 2);
@@ -296,7 +294,7 @@ a.dump
 	var sig;
 	sig=SinOsc.ar(0.1).linlin(-1,1,0,0.1);
 	Out.ar(5,sig);
-}.play)
+}.play;)
 
 
 ({
@@ -331,7 +329,7 @@ a.dump
 ({
 	var sig;
 
-	sig=Blip.ar(MouseX.kr(0,100).poll, numharm: MouseY.kr(0,2000).poll, mul: 0.7);
+	sig=Blip.ar(MouseX.kr(0,100).poll, numharm: MouseY.kr(0,80).poll, mul: 0.7);
 	Out.ar(0,sig!2);
 }.play;)
 
@@ -358,9 +356,9 @@ a.dump
 	var freq, sig;
 
 
-	freq= LFNoise0.ar(1).poll;
+	//freq= LFNoise0.ar(1).poll;
 	//freq= LFNoise1.ar(1).poll;
-	//freq= LFNoise2.ar(1).poll;
+	freq= LFNoise2.ar(1).poll;
 
 	sig=SinOsc.ar(freq, mul:0.7);
 
@@ -404,7 +402,7 @@ a.dump
 	in = SoundIn.ar(0);
 	sig = CombC.ar(
 		in,
-		maxdelaytime:10,
+		maxdelaytime:1,
 		delaytime:MouseX.kr(0,0.1).poll,
 		decaytime:MouseY.kr(0,1000).poll
 	)+ in;
