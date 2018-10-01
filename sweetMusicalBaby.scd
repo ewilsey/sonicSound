@@ -20,6 +20,7 @@ b={
 	SinOsc.ar(freq, mul: 0.7);
 	Out.ar(0,sig!2);
 
+
 }.play;)
 //Adds a scratchy robot sound.
 
