@@ -89,32 +89,234 @@ a[0]
 //iterate over each item in the array
 a.do({arg item, idx; item.postln; idx.postln; "".postln;})
 
+(
+a.do( {
+	arg item, idx;
 
+	a[idx] = item ++ item;
+
+	item.postln;
+	idx.postln;
+	"".postln;
+} )
+)
+
+// ++(anArray)
+(
+var y, z;
+z = [1, 2, 3, 4];
+y = z ++ [7, 8, 9];
+z.postln;
+y.postln;
+)
+
+
+//.add(item)
+(
+// z and y are the same object
+var y, z;
+z = [1, 2, 3];
+y = z.add(4);
+z.postln;
+y.postln;
+)
+
+
+// create an array from a number
+100.do( {arg item, idx; idx.postln;} );
 
 //Task
 
+//square number generator
+
 (
-t=Tasl({
-	50.do({arg o;
+t=Task({
+	50.do({arg i;
 		i.squared.postln;
 		0.5.wait;
 	})
 })
 )
 
-/////////////////////////////
-SynthDef(\ping,{
-	arg freq = 200,len = 1, amp = 1;
-	var sig, env;
-	env=Env.new([0,1,0.3,0.3,0],[0.1,0.05,0.75,0.1]);
-	env=EnvGen.kr(env, timescale: len, doneAction: 2);
+t.start;
+t.pause;
+t.resume;
+t.reset;
+t.stop;
 
-	sig = SinOsc.ar (freq, mul: amp) * env;
+/////////////////////////////
+(
+SynthDef(\simpleSine, {
+	arg freq = 440;
+	var sig;
+
+	sig = SinOsc.ar(freq, mul: -3.dbamp);
+
 	Out.ar(0, sig!2);
+}).add;
+)
+
+a = Synth(\simpleSine)
+
+
+(
+r = Routine({
+
+	a = Synth(\simpleSine);
+	0.1.wait;
+
+	13.do({ arg id;
+		a.set(\freq, (id + 60).midicps );
+		1.wait;
+	});
+	a.free;
+})
+)
+
+r.play;
+
+
+
+
+(
+t = Task({
+	a = Synth(\simpleSine);
+	0.1.wait;
+
+	13.do({ arg i;
+		a.set(\freq, (i + 60).midicps );
+		1.wait;
+	});
+	// a.free;
+});
+)
+
+
+//////////////////////////////////////////////
+
+
+(
+SynthDef(\ping, {
+	arg freq = 440, len = 1, amp = 1;
+
+	var sig, env, pos;
+
+	env = Env.new([0,1, 0.1, 0.1, 0], [0.1, 0.05, 0.75, 0.1]);
+	env = EnvGen.kr( env, timeScale: len, doneAction: 2 );
+
+	sig = SinOsc.ar( [freq, freq*1.01], mul: amp ) * env;
+	sig = Mix(sig);
+
+	pos = LFNoise2.ar(Rand.new(0.1, 10));
+
+	sig = Pan2.ar( sig, pos );
+
+
+	Out.ar(0, sig );
 }).add
+)
 
 Synth(\ping)
-s.plotTree
+
+
+(
+t = Task({
+
+	inf.do({
+		var freq, len, amp;
+		freq = rrand(200.0, 800.0).postln;
+		len = rrand(1.0, 10.0).postln;
+		amp = rrand(-24.0, -3.0).postln;
+		"".postln;
+
+		Synth(\ping, [\freq, freq, \len, len, \amp, amp.dbamp]);
+
+		rrand(0.01, len).wait;
+		// len.wait;
+	})
+})
+)
+
+t.start
+
+t.pause
+t.stop
+
+
+///////////////////////////////////////////////
+
+
+
+c = TempoClock.new( 4, 0 )
+
+(
+t = Task({
+
+	inf.do({
+		var freq, len, amp;
+		freq = rrand(200.0, 800.0);
+		len = rrand(0.2, 4.0);
+		amp = rrand(-24.0, -3.0);
+
+		Synth(\ping, [\freq, freq, \len, len, \amp, amp.dbamp]);
+
+		// rrand(0.01, len).wait;
+		1.0.wait;
+	})
+},
+clock: c
+)
+)
+
+t.start
+
+// leave t running for the following
+
+c = TempoClock.default;
+
+// reference to default tempoclock
+c
+
+c.tempo
+
+c.tempo = 120/60;
+
+c.tempo = 240/60;
+
+c.tempo = 30/60;
+
+
+
+
+
+
+
+
+
+d = TempoClock.new( 0.5, 0 )
+
+(
+f = Task({
+
+	inf.do({
+		var freq, len, amp;
+		freq = rrand(50.0, 200.0);
+		len = rrand(0.2, 4.0);
+		amp = rrand(-24.0, -3.0);
+
+		Synth(\ping, [\freq, freq, \len, len, \amp, amp.dbamp]);
+
+		// rrand(0.01, len).wait;
+		1.0.wait;
+	})
+},
+clock: d
+).play;
+)
+
+d.tempo = 9/5
+
+d.dump
 
 
 /*Wednesday
