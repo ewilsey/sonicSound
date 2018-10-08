@@ -28,7 +28,7 @@ Routine { arg inval;
 )
 
 
-//jarray in SC
+//array in SC
 
 
 //initialize an array
@@ -66,3 +66,16 @@ SynthDef(\ping,{
 
 Synth(\ping)
 s.plotTree
+
+
+/*Wednesday
+
+Language-Side Scheduling and Sequencing
+
+Scheduling with {}.fork & t.wait
+.do{} loops
+.stop
+TempoClock()'s
+Task({})
+Routine({})
+Sketch TODO: Write a short work that encapsulates your synth's as SynthDefs. Then utilize language-side scheduling to launch and alter synths algorithmically.*/
