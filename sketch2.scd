@@ -9,7 +9,7 @@ SynthDef(\bRand, {
 
 	sig = FSinOsc.ar( [freq, freq*1.01], mul: amp ) * env;
 
-	pos = SinOsc.ar(Rand(400, 800), 0, 0.2) * Line.kr(1, 0, 1, doneAction: Done.freeSelf);
+	pos = SinOsc.ar(Rand(400, 800), 0, 0.2) * Line.kr(1, 0, 1);
 
 	sig = Pan2.ar( sig, pos );
 
