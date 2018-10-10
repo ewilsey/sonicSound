@@ -1,15 +1,15 @@
 (
-SynthDef.new(\bRand, {
+SynthDef(\bRand, {
  	arg freq = 200, len = 0, amp = 0.2;
 
 	var sig, env, pos;
 
 	env = Env.new([0,1, 0.1, 0.1, 0], [0.1, 0.05, 0.75, 0.1]);
-	env = EnvGen.kr( env, timeScale: len, doneAction: Done.freeSelf );
+	env = EnvGen.kr( env, timeScale: len, doneAction:2 );
 
 	sig = FSinOsc.ar( [freq, freq*1.01], mul: amp ) * env;
 
-	pos = SinOsc.ar(Rand.new(0.1, 10)mul: -3.dbamp);
+	pos = SinOsc.ar(Rand(400, 800), 0, 0.2) * Line.kr(1, 0, 1, doneAction: Done.freeSelf);
 
 	sig = Pan2.ar( sig, pos );
 
