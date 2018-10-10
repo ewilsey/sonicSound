@@ -1,6 +1,6 @@
 (
 SynthDef(\bRand, {
- 	arg freq = 200, len = 0, amp = 0.2;
+ 	arg freq = 200, len = 0.01, amp = 0.2;
 
 	var sig, env, pos;
 
