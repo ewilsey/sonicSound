@@ -1,4 +1,4 @@
-s.boot
+s.reboot
 // Endlessly loop sound.
 
 (
@@ -13,3 +13,4 @@ SynthDef(\micTest, {
 )
 
 Synth(\micTest);
+a.free
