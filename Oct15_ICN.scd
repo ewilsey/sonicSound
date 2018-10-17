@@ -1,89 +1,329 @@
-//we can use inFeedback to grab info from a bus, even if that info occurs later in the node tree.
-
-
 // create an audio bus for mic synth
-
 ~mic = Bus.audio();
 
 
-//basic input synth
+// basic input synth
 (
-SynthDef(\in,
-{
+SynthDef(\in, {
 	arg micIn = 0, outBus = 0;
-		var sig;
-		sig = SoundIn.ar(micIn);
-		sig = Normalizer.ar(sig, -3.dbamp);
-		sig = DelayC.ar(sig, 1, 1);
+	var sig;
 
-		Out.ar(outBus, sig);
+	sig = SoundIn.ar(micIn);
+	sig = Normalizer.ar(sig, -3.dbamp);
+	sig = DelayC.ar(sig, 1, 1);
+
+	Out.ar(outBus, sig);
+
 }).add;
 )
 
 Synth(\in, [\outBus, ~mic]);
 
-//creates an effects synth
 
+// create a effects synth
 (
 SynthDef(\poppingAudio, {
-	arg inBus = 0, outBus = 0, popRate = 1;
+	arg inBus = 0, outBus = 0, popRate = 10;
 	var sig;
+
 	sig = In.ar(inBus);
 
-	sig = sig * (Dust.ar(popRate).ceil)
+	sig = sig * Linen.kr(Dust.ar(popRate).round);
+
 	sig = Limiter.ar(sig, 1.0);
+
 	Out.ar(outBus, sig);
 }).add;
 )
-Synth(\poppingAudio, [\inBUs, ~mic]);
+
+Synth(\poppingAudio, [\inBus, ~mic]);
+////////////////////////////////////
+
+// create an audio bus for mic synth
+// ~mic = Bus.audio();
+~fx = Bus.audio;
 
 
-//specify pos to node group
-Synth(\in, [\outBus, ~mic], addAction: 'addToTail');
-
+// basic input synth
 (
-t=Task({inf.do({
-	Synth(\poppingAudio, [\inBUs, ~mic], addAction: 'addToTail' );
-	1.5.rand.wait;
-})}).play;
+SynthDef(\in, {
+	arg micIn = 0, outBus = 0;
+	var sig;
+
+	sig = SoundIn.ar(micIn);
+	sig = Normalizer.ar(sig, -3.dbamp);
+	sig = DelayC.ar(sig, 1, 1);
+
+	Out.ar(outBus, sig);
+
+}).add;
 )
-// add to professor notes
-~micSynth = Synth(\in,[\outBus, ~fx]);
+
+// create a effects synth
+(
+SynthDef(\masterOut, {
+	arg inBus = 0, outBus = 0, popRate = 10;
+	var sig;
+
+	sig = In.ar(inBus);
+
+	sig = Limiter.ar(sig, 1.0);
+
+	Out.ar(outBus, sig);
+}).add;
+)
+
+~micSynth = Synth(\in, [\outBus, ~fx]);
 
 ~masterOut = Synth(\masterOut, [\inBus, ~fx], addAction: 'addToTail');
 
+
+
 (
 SynthDef(\selfRegulator, {
-	arg inBus = 0, outBus =0;
+	arg inBus = 0, outBus = 0;
 	var sig, ampVal;
+
 	sig = In.ar(inBus);
-	ampVal = Amplitude.kr(sig, 0.5, 0.1);
+
+	ampVal = (Amplitude.kr(sig, 0.01, 1)*1).clip(0, 1);
+
+	sig = sig * (1-ampVal).poll;
+
+
+	// adds signal to existing contents of bus
+	// Out.ar(outBus, sig);
+
+	// replace the contents of a bus (useful to revent mixing of contents on bus)
+	ReplaceOut.ar(outBus, sig);
+}).add;
+)
+
+(
+~regulator = Synth(\selfRegulator,
+	[\inBus, ~fx, \outBus, ~fx],
+	target: ~masterOut,
+	addAction: 'addBefore');
+)
+
+~regulator.free
+///////////////////////////////////////////////////////////
+
+// create an audio bus for mic synth
+~mic = Bus.audio();
+
+
+// basic input synth
+(
+SynthDef(\in, {
+	arg micIn = 0, outBus = 0;
+	var sig;
+
+	sig = SoundIn.ar(micIn);
+	sig = Normalizer.ar(sig, -3.dbamp);
+	sig = DelayC.ar(sig, 1, 1);
+
+	Out.ar(outBus, sig);
+
+}).add;
+)
+
+// create a effects synth
+(
+SynthDef(\poppingAudio, {
+	arg inBus = 0, outBus = 0, popRate = 10;
+	var sig;
+
+	sig = In.ar(inBus);
+
+	sig = sig * Linen.kr(Line.kr(1,0,0.1), doneAction: 2);
+
+	sig = Limiter.ar(sig, 1.0);
+
 	Out.ar(outBus, sig);
 }).add;
 )
-~regulator = Synth(\selfRegulator,[\inBus, ~fx, \outBus, ~fx], target: ~masterOut, addAction: 'addBefore');
-~regulator.free
 
+
+
+// old way
+Synth(\poppingAudio, [\inBus, ~mic], );
+Synth(\in, [\outBus, ~mic]);
+
+
+
+
+// specify position in node group
+Synth(\in, [\outBus, ~mic]);
+Synth(\poppingAudio, [\inBus, ~mic], addAction: 'addToTail' );
+(
+t.stop;
+t = Task({inf.do({
+	Synth(\poppingAudio, [\inBus, ~mic], addAction: 'addToTail' );
+	1.5.rand.wait;
+})}).play;
+)
+
+///////////////////////////////////////////////////////
+
+// we can use InFeedback to grabn information from a bus,
+// even if that information occurs later in the node tree.
+
+
+
+// create an audio bus for mic synth
+~mic = Bus.audio();
+
+
+// basic input synth
+(
+SynthDef(\in, {
+	arg micIn = 0, outBus = 0;
+	var sig;
+
+	sig = SoundIn.ar(micIn);
+	sig = Normalizer.ar(sig, -3.dbamp);
+	sig = DelayC.ar(sig, 1, 1);
+
+	Out.ar(outBus, sig);
+
+}).add;
+)
+
+// create a effects synth
+(
+SynthDef(\poppingAudio, {
+	arg inBus = 0, outBus = 0, popRate = 10;
+	var sig;
+
+	sig = InFeedback.ar(inBus);
+
+	sig = sig * Linen.kr(Line.kr(1,0,0.1), doneAction: 2);
+
+	sig = Limiter.ar(sig, 1.0);
+
+	Out.ar(outBus, sig);
+}).add;
+)
+
+
+// Notice that popping is now first, but InFeedback still grabs the signal.
+Synth(\in, [\outBus, ~mic]);
+Synth(\poppingAudio, [\inBus, ~mic], );
 
 (
-t= Task({
+t = Task({
 	inf.do({
-		synth(\poppingAudio, [\inBus, ~mic], );
+		Synth(\poppingAudio, [\inBus, ~mic], );
 		1.5.rand.wait;
 })}).play;
 )
 
+////////////////////////////////////////////////
+
+~fbBus = Bus.audio;
+
+// use typical busses to create an internal feedback loop
+// note: requires InFeedback to read from previous cycle on bus
 (
-Synth(\feedbackDelay, {
+SynthDef(\feedbackDelay, {
 	arg micIn = 0;
 	var sig, inSig, fbSig;
+
 	inSig = SoundIn.ar(micIn);
-	fbSig - InFeedback.ar(~fbBus);
+
+	fbSig = InFeedback.ar(~fbBus);
+
 	sig = Mix([inSig, fbSig]);
-	sig = DelayC.ar(sig, 2,2);
-	LocalOut.ar(sig);
-	Out.ar(0,sig);
+
+	sig = DelayC.ar(sig, 2, 2);
+
+	Out.ar(~fbBus, sig);
+
+	Out.ar(0, sig);
+}).add;
+)
+
+Synth(\feedbackDelay)
+
+
+
+(
+SynthDef(\feedbackDelay_Interal, {
+	arg micIn = 0;
+	var sig, inSig, fbSig;
+
+	inSig = SoundIn.ar(micIn);
+
+	fbSig = LocalIn.ar(1);
+
+	sig = Mix([inSig, fbSig]);
+
+	Out.ar(0, sig);
+
+	sig = DelayC.ar(sig, 2, 0.1);
+
+	LocalOut.ar(sig * 0.7);
 
 }).add;
 )
-Synth(\feedbackDelay)
+
+Synth(\feedbackDelay_Interal)
+
+//////////////////////////////////////////
+
+(
+SynthDef(\controlFB, {
+	arg micIn = 0;
+	var sig, ampVal, krIn;
+
+	sig = SoundIn.ar(micIn);
+
+	krIn = LocalIn.kr();
+	krIn = (krIn + 1).linexp(1, 2, 2, 1);
+	krIn = ((krIn - 1) * 10) - 5;
+	krIn.poll(label: \krVal);
+	krIn.clip(0,1);
+
+	sig = sig * Linen.kr(krIn);
+
+	sig = Compander.ar(sig, sig, 0.1, 1.0, 1/3 ) * 1.8;
+	ampVal = Amplitude.kr(sig).poll(label: \rawAmp);
+
+	LocalOut.kr(ampVal);
+
+	sig = Limiter.ar(sig, 0.9);
+
+
+	Out.ar(0, sig);
+}).play;
+)
+
+
+(
+SynthDef(\controlFB, {
+	arg micIn = 0;
+	var sig, chain, centroid, ampVal, krIn;
+
+	sig = SoundIn.ar(micIn);
+	krIn = LocalIn.kr(2).poll;
+	ampVal = krIn[1];
+	centroid = krIn[0];
+
+	sig = BRF.ar(sig, centroid, 0.9);
+	sig = BRF.ar(sig, centroid, 0.01);
+
+	sig = sig * (1 - ampVal.clip(0,1)).poll;
+
+	chain = FFT(LocalBuf(2048), sig);
+    centroid = SpecCentroid.kr(chain);
+	ampVal = Amplitude.kr(sig, 0.001, 1);
+
+	LocalOut.kr([centroid, ampVal]);
+
+	sig = Limiter.ar(sig, 0.9);
+
+
+	Out.ar(0, sig);
+}).play;
+)
