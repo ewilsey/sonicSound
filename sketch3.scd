@@ -1,20 +1,29 @@
 (
-SynthDef(\feedbackDelay, {
-	arg micIn = 0;
-	var sig, inSig, fbSig;
 
-	inSig = SoundIn.ar(micIn);
+{
 
-	fbSig = InFeedback.ar(~fbBus);
+	var source = Impulse.ar(XLine.kr(800,100,5), 0.0,  0.5, 0);
 
-	sig = Mix([inSig, fbSig]);
+	var sound, feedback;
 
-	sig = DelayC.ar(sig, 2, 1);
 
-	Out.ar(~fbBus, sig);
 
-	Out.ar(0, sig * 0.7);
-}).add;
+	feedback = LocalIn.ar(1);	//one channel of feedback
+
+
+
+	sound = source + feedback;
+
+
+
+	LocalOut.ar(sound* MouseY.kr(0,0.9));  //feedback sound with some gain (<1 to stop feedback building up and overloading!).
+
+
+
+	sound;
+
+
+
+}.play
+
 )
-
-Synth(\feedbackDelay)
