@@ -2,21 +2,21 @@
 
 {
 
-	var source = Impulse.ar(XLine.kr(800,100,5), 0.0,  0.5, 0);
+	var in = Decay.ar(Pulse.ar(200,SinOsc.kr(0.2).range (0.01, 0.99)  *(Saw.ar(XLine.kr(100,100,5)))));
 
 	var sound, feedback;
 
 
 
-	feedback = LocalIn.ar(1);	//one channel of feedback
+	feedback = LocalIn.ar(2);	//one channel of feedback
 
 
 
-	sound = source + feedback;
+	sound = in + feedback;
 
 
-
-	LocalOut.ar(sound* MouseY.kr(0,0.9));  //feedback sound with some gain (<1 to stop feedback building up and overloading!).
+  // reverse channels to give ping pong effect, apply decay factor
+    LocalOut.ar(feedback.reverse * 0.8);
 
 
 
@@ -24,6 +24,6 @@
 
 
 
-}.play
+}.play;
 
 )
