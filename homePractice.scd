@@ -85,7 +85,17 @@ x.free;
 
 /////////////////////////////////////
 
+x = {PinkNoise.ar * 0.33}.play;
 
+x.free;
 
+(
+x ={
+	var sig, env;
+	env = Line.kr(1,0,1);
+	sig = Pulse.ar(ExpRand(30,500)) * env;
+}.play;
+)
 
+s.reboot;
 
