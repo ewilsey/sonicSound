@@ -224,3 +224,61 @@ x = Synth.new(\iter2);
 x.free;
 ///////////////////////////////////Server Arch
 
+//////////////////////////////////Buffer
+
+~b0.play;
+
+s.boot;
+// allocate an array of Buffers and fill them with different harmonics
+(
+b = Buffer.allocConsecutive(8, s, 4096, 1, { |buf, i|
+    buf.sine1Msg((1..((i+1)*6)).reciprocal) // completion Messages
+});
+
+a = { VOsc.ar(SinOsc.kr(0.5, 0).range(b.first.bufnum + 0.1, b.last.bufnum - 0.1),
+    [440, 441], 0, 0.2) }.play;
+)
+a.free;
+
+// iterate over the array and free it
+b.do(_.free);
+
+
+//FRAMES
+~b0.numFrames;
+
+//Channels
+~b0.numChannels;
+numSamples = numFrames * numChannels
+
+//Duration
+~b2.duration;
+
+//Buffer Numbwers (bufnums)
+~b0.bufnum;
+~b1.bufnum;
+~b2.bufnum;
+~b3.bufnum;
+
+//Buffer Sample Rate
+~b0.sampleRate;
+s.sampleRate;
+
+// Summary
+~b0.query;
+
+//available buffers on server
+
+s.options.numBuffers;
+
+
+(SythDef.new(\playbuf_test,{
+	arg amp =1, out = 0, buf;
+	var sig;
+	sig = PlayBuf.ar(2,buf);
+	sig = sig * amp;
+	Out.ar(out, sig);
+}).add;)
+
+Synth.new(\playbuf_test,[\buf, ~b0.bufnum]);
+                 //changing this ^ selects stored buffer to play. 
