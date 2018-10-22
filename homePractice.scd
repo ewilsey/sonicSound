@@ -53,6 +53,7 @@ e.free;
 }).add;)
 
 x = Synth.new(\sine);
+x.free;
 
 (SynthDef.new(\pulse,{
 	arg ampHz = 4, fund = 48, maxPartial = 4, width = 0.5;
@@ -89,13 +90,79 @@ x = {PinkNoise.ar * 0.33}.play;
 
 x.free;
 
-(
-x ={
+({
 	var sig, env;
-	env = Line.kr(1,0,1);
+	env = Line.kr(1,0,1, doneAction: 2);
 	sig = Pulse.ar(ExpRand(30,500)) * env;
-}.play;
+}.play;)
+
+({
+	var sig, env;
+	env = XLine.kr(1,0.01,1, doneAction: 2);
+	sig = Pulse.ar(ExpRand(30,500)) * env;
+}.play;)
+
+({
+	var sig, freq, env;
+	env = XLine.kr(1,0.01,10, doneAction: 2); //done action on longer duration.
+	freq = XLine.kr(880, 110, 5);
+	sig = Pulse.ar(freq) * env;
+}.play;)
+
+({
+	var sig, freq, env;
+	env = XLine.kr(1,0.01,5);
+	freq = XLine.kr(880, 110,10, doneAction: 2); // done action on longer duration
+	sig = Pulse.ar(freq) * env;
+}.play;)
+
+Env.new.plot;
+
+s.quit;
+
+(x = {
+	arg t_gate = 0;
+	var sig, env;
+	env = EnvGen.kr(Env.new(
+		[0.01, 1, 0.2, 0.01],
+		[0.5,1,2],
+		[3,-3, 0]),t_gate); //set trigger rate
+	sig = Pulse.ar(LFPulse.kr(8).range(600,900)) * env;
+}.play;)
+
+x.set(\t_gate, 1);
+
+(x = {
+	arg gate = 0;
+	var sig, env, freq;
+	freq = EnvGen.kr(Env.adsr(1), gate, 200, 0.1);
+	env = EnvGen.kr(Env.adsr, gate);
+	sig = VarSaw.ar(SinOsc.kr(16).range(500,1000)) * env;
+}.play;)
+
+x.set(\gate, 0);
+x.free;
+///////////////////////////////////////
+
+x = {SinOsc.ar([300,500])}.play; // two sine channels multichannel expansion
+
+(
+SynthDef.new(\multi,{
+	var sig, amp, env;
+	env = EnvGen.kr(
+		Env.new([0,1,0],[10,10],[1,-1]),doneAction:2);
+	amp = SinOsc.kr({ExpRand( 0.2, 12)}!8).range(0,1);
+	sig = SinOsc.ar({ExpRand(50,1200)}!8);
+	sig = sig * amp * env;
+	sig = Splay.ar(sig) * 0.5;
+	Out.ar(0,sig);
+}).add;
 )
 
-s.reboot;
+x = Synth.new(\multi);
+x.free;
 
+rrand(10,2000)!5; // 5 instances of the same number chosen at random
+{rrand(10,2000)}!5; //5 random numbers
+
+//////////////////////////////////////////////////
