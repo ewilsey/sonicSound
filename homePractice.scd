@@ -142,9 +142,9 @@ x.set(\t_gate, 1);
 
 x.set(\gate, 0);
 x.free;
-///////////////////////////////////////
+///////////////////////////////////////multichannelExpansion
 
-x = {SinOsc.ar([300,500])}.play; // two sine channels multichannel expansion
+x = {SinOsc.ar([300,500])}.play; // two sine channels
 
 (
 SynthDef.new(\multi,{
@@ -165,4 +165,62 @@ x.free;
 rrand(10,2000)!5; // 5 instances of the same number chosen at random
 {rrand(10,2000)}!5; //5 random numbers
 
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////iteration
+
+(5).do{"hello".postln};
+
+(
+SynthDef.new(\iter,{
+	arg freq = 40;
+	var temp, sum, env;
+	sum = 0;
+	env = EnvGen.kr(
+		Env.perc(0.01,5,1,-2),doneAction:2
+	);
+	10.do{
+		temp = VarSaw.ar(
+			freq * {Rand(0.99, 1.02)}!2,
+			{Rand(0.0,1.0)}!2,
+			{ExpRand(0.005,0.05)}!2
+		);
+		sum = sum + temp;
+	};
+	sum = sum * 0.5;
+	Out.ar(0,sum);
+
+}).add;
+)
+
+Synth.new(\iter, [\freq, 400]);
+Synth.new(\iter, [\freq, 300]);
+Synth.new(\iter, [\freq, 60.midicps]);
+Synth.new(\iter, [\freq, 75.midicps]);
+
+([60,64,67].do{
+	arg midinote;
+	Synth.new(\iter,[\freq, midinote.midicps]);
+})  //play chords
+
+(
+SynthDef.new(\iter2, {
+	arg freq = 200, dev =1.02;
+	var temp, sum;
+	sum = 0;
+	20.do{
+		arg count;
+		temp = SinOsc.ar(
+			freq *
+			(count + 1) *
+			LFNoise1.kr({Rand(0.5,0.2)}!2).range(dev.reciprocal,dev)
+		);
+		temp = temp * LFNoise1.kr({Rand(0,5,8)}!2).exprange(0.01,1);
+				sum = sum + temp;
+	};
+	sum = sum * 0.05;
+	Out.ar(0,sum);
+}).add;)
+
+x = Synth.new(\iter2);
+x.free;
+///////////////////////////////////Server Arch
+
