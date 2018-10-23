@@ -90,6 +90,7 @@ x = {PinkNoise.ar * 0.33}.play;
 
 x.free;
 
+
 ({
 	var sig, env;
 	env = Line.kr(1,0,1, doneAction: 2);
@@ -104,8 +105,9 @@ x.free;
 
 ({
 	var sig, freq, env;
-	env = XLine.kr(1,0.01,10, doneAction: 2); //done action on longer duration.
-	freq = XLine.kr(880, 110, 5);
+	env = XLine.kr(1,0.01,5, doneAction: 2);
+	        //done action ^ per this longer duration.
+	freq = XLine.kr(880, 110, 1);
 	sig = Pulse.ar(freq) * env;
 }.play;)
 
@@ -140,7 +142,8 @@ x.set(\t_gate, 1);
 	sig = VarSaw.ar(SinOsc.kr(16).range(500,1000)) * env;
 }.play;)
 
-x.set(\gate, 0);
+
+x.set(\gate, 0.0);
 x.free;
 ///////////////////////////////////////multichannelExpansion
 
@@ -223,6 +226,44 @@ SynthDef.new(\iter2, {
 x = Synth.new(\iter2);
 x.free;
 ///////////////////////////////////Server Arch
+Nodes, Buses, Order of Exection
+Nodes -> {Synth, Group}
+
+s.options.numAudioBusChannels;
+s.options.numOutputBusChannels;
+s.options.numInputBusChannels;
+
+(
+SynthDef.new(\blip,{
+	arg out;
+	var freq, trig, sig;
+	freq = LFNoise0.kr(3).exprange(300,1200).round(300);
+	sig = SinOsc.ar(freq) * 0.25;
+	trig = Dust.kr(2);
+	sig = sig * EnvGen.kr(Env.perc(0.01, 0.2), trig);
+	sig = Pan2.ar(sig, LFNoise1.kr(10));
+	Out.ar(out, sig);
+}).add;
+)
+
+(
+SynthDef.new(\reverb,{
+	arg in, out  = 0;
+	var sig;
+	sig = In.ar(in,1);
+	sig = FreeVerb.ar(sig, 0.5, 0.8, 0.2)!2;
+	Out.ar(out, sig);
+}).add
+)
+
+y = Synth.new(\reverb, [\in, 1]);
+x = Synth.new(\blip, [\out, 1]);
+y = Synth.new(\reverb, [\in, ~reverbBus]);
+x = Synth.new(\blip, [\out, ~reverbBus]);
+
+~reverbBus = Bus.audio(s,1);
+~reverbBus.index;
+
 
 //////////////////////////////////Buffer
 
@@ -281,4 +322,8 @@ s.options.numBuffers;
 }).add;)
 
 Synth.new(\playbuf_test,[\buf, ~b0.bufnum]);
-                 //changing this ^ selects stored buffer to play. 
+                 //changing this ^ selects stored buffer to play.
+
+
+//////////////////////////midi
+  
