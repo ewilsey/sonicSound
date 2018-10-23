@@ -219,7 +219,7 @@ Synth(\feedbackDelay_Interal)
 Server.default.record;   ///Record
 Server.default.stopRecording;    ///Stop
 
-///Synth 10
+///Synth 10  NOT IN USE
 
 ({
 	var sig, note, freq;
@@ -234,8 +234,29 @@ Server.default.stopRecording;    ///Stop
 )
 
 
-///
+///Synth 11
 
+(
+a = {
+
+	var sig, carrFreq;
+
+	carrFreq = LFNoise0.kr(2);
+	// carrFreq = LFNoise1.kr(2);
+	// carrFreq = LFNoise2.kr(2);
+
+
+	carrFreq = carrFreq.linlin(-1, 1, 100, 400).poll;
+
+	sig = SinOsc.ar(carrFreq, mul: 0.8);
+
+	// output sig
+	sig
+}.play;
+)
+
+Server.default.record;   ///Record
+Server.default.stopRecording;    ///Stop
 
 //////Buffers
 
@@ -255,7 +276,7 @@ Server.default.stopRecording;    ///Stop
 ~b12 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181023_161627.aiff");
 ~b13 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181023_162710.aiff");
 ~b14 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181023_164021.aiff");
-~b15 = Buffer.read(s, );
+~b15 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181023_164925.aiff");
 ~b16 = Buffer.read(s, );
 ~b17 = Buffer.read(s, );
 ~b18 = Buffer.read(s, );
@@ -280,7 +301,7 @@ Server.default.stopRecording;    ///Stop
 ~b12.play;//reverbBlips3           leaky sink 3 warp out
 ~b13.play;//internalFeedbackDelay   characterChatter
 ~b14.play;//sketch2                 wine glasses / before sink music
-~b15.play;
+~b15.play;//LFNoise0                Phone or video game
 ~b16.play;
 ~b17.play;
 ~b18.play;
