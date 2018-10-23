@@ -193,10 +193,10 @@ SynthDef.new(\iter,{
 
 Synth.new(\iter, [\freq, 400]);
 Synth.new(\iter, [\freq, 300]);
-Synth.new(\iter, [\freq, 60.midicps]);
-Synth.new(\iter, [\freq, 75.midicps]);
+Synth.new(\iter, [\freq, 60.midicps]);  //Scarface
+Synth.new(\iter, [\freq, 75.midicps]);  // Scarface
 
-([60,64,67].do{
+([60, 67  ].do{
 	arg midinote;
 	Synth.new(\iter,[\freq, midinote.midicps]);
 })  //play chords
