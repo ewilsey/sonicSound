@@ -25,3 +25,42 @@ SynthDef("Water", { arg out=0;
 ////  tone^^^               ^^speed
 
 
+
+/// Possible alarm. Could also be phone alarm.
+(
+{ var trig;
+    trig = Impulse.kr(MouseX.kr(0.5, 20, 1)); //bottom left slow alarm
+    SinOsc.ar(Sweep.kr(trig, 700) + 500, 0, 0.2)
+}.play;
+)
+
+//sweeper used to index buffer , allows sweeping of buffers. may discover unique sound profiles.
+b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
+
+(
+{ var trig;
+    trig = Impulse.kr(MouseX.kr(0.5, 10, 1));
+    BufRd.ar(1, b, Sweep.ar(trig, BufSampleRate.ir(0)))
+}.play;
+)
+
+//Play Above Backwards...
+(
+{ var trig, pos, rate;
+    trig = Impulse.kr(MouseX.kr(0.5, 10, 1));
+    rate = BufSampleRate.ir(0);
+    pos = Sweep.ar(trig, rate.neg) + (BufFrames.ir(0) * LFNoise0.kr(0.2));
+    BufRd.ar(1, b, pos)
+}.play;
+)
+
+//higher faster, wierder
+(
+{ var trig, rate;
+    trig = Impulse.kr(MouseX.kr(0.5, 10, 1));
+    rate = Sweep.kr(trig, 2) + 0.5;
+    BufRd.ar(1, b, Sweep.ar(trig, BufSampleRate.ir(0) * rate))
+}.play;
+)
+
+b.free
