@@ -1,4 +1,4 @@
-//Work section for Public Presentation Dec 3
+//Work section for Public Presentation Dec 3, first draft due mon/wed 11//25
 
 //Toaster oven scene, potato position change, zoom in to eyes turning from ivory to red as he is baked alive.
 (
