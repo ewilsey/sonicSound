@@ -1,4 +1,4 @@
-a = {SinOsc.ar(200)* 0.25}; // freq, mul
+a = {SinOsc.ar(222)* 0.75}; // freq, mul
 
 b = a.play;
 

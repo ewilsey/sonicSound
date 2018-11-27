@@ -207,7 +207,7 @@ SynthDef(\feedbackDelay_Interal, {
 
 	Out.ar(0, sig);
 
-	sig = DelayC.ar(sig, 2, 0.1);
+	sig = DelayC.ar(sig, 2, 0.5);
 
 	LocalOut.ar(sig * 0.7);
 
