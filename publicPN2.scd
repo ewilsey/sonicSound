@@ -108,54 +108,33 @@ Pdef(
 //// Buffers and manipulating them
 
 //////Buffers
+//record
+
+Server.default.record;   ///Record
+Server.default.stopRecording;    ///Stop
 
 //Store
-~b0 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113126.aiff");
-~b1 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113158.aiff");
-~b2 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113233.aiff");
-~b3 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113255.aiff");
-~b4 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113321.aiff");
-~b5 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113350.aiff");
-~b6 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113420.aiff");
-~b7 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113451.aiff");
-~b8 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113544.aiff");
-~b9 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113551.aiff");
-~b10 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113604.aiff");
-~b11 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113613.aiff");
-~b12 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113622.aiff");
-~b13 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113636.aiff");
-~b14 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113648.aiff");
-~b15 = Buffer.read(s, "C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/SC_181127_113656.aiff");
-~b16 = Buffer.read(s, );
-~b17 = Buffer.read(s, );
-~b18 = Buffer.read(s, );
-~b19 = Buffer.read(s, );
-~b20 = Buffer.read(s, );
+~b0 = Buffer.read(s, );
+~b1 = Buffer.read(s, );
+~b2 = Buffer.read(s, );
+~b3 = Buffer.read(s, );
+~b4 = Buffer.read(s, );
 
 
 //Play
 
-~b0.play;// Car door
-~b1.play;// More knocks, long.
-~b2.play;// Too much feedback.
-~b3.play;// Louder Frog
-~b4.play;// Too much feedback.
-~b5.play;// Harr
-~b6.play;// Knocking w/ whistle
-~b7.play;// Random knocks
-~b8.play;// Hrehh
-~b9.play;// Ruuhh
-~b10.play;// Rhehh
-~b11.play;// Chh
-~b12.play;// Haa
-~b13.play;// Ughngh
-~b14.play;// Ha ah ah
-~b15.play;// Ha ha ha
-~b16.play;//
-~b17.play;//
-~b18.play;//
-~b19.play;//
-~b20.play;//
+~b0.play;//
+~b1.play;//
+~b2.play;//
+~b3.play;//
+~b4.play;//
+~b5.play;//
+~b6.play;//
+~b7.play;//
+~b8.play;//
+~b9.play;//
+~b10.play;//
+
 
 //Patterns of Buffers
 
@@ -248,3 +227,4 @@ Pdef(
 )
 
 Buffer.freeAll;
+
