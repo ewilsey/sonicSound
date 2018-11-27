@@ -220,7 +220,7 @@ Pdef(
     \sinepat,
 	Pbind(
 	    \instrument, \sine,
-		\dur, Pseq([1/16], inf),
+		\dur, Pseq([1/12], inf),
 		\stretch, 1.875,
         \note, Pxrand([0,3,5,9,10,12], inf).trace,
 	    \atk, 0.005,
@@ -232,14 +232,14 @@ Pdef(
 ).play(quant:1.875);
 )
 
-//Drums (not quite there)
+//Drums
 
 (Pdef(
 	\rhythm,
 	Pbind(
 		\instrument, \bufplay,
-		\dur, Pseq([1/16],inf),
-		\buf, Prand(d[\drum],inf),
+		\dur, Pseq([1/12],inf),
+		\buf, Pxrand(d[\drum],inf),
 		\rate, Pexprand(3,4.25,inf),
 		\amp, Pseq([0.8, Pexprand(0.005,0.3,7)],inf),
 		\stretch, 1.875,
