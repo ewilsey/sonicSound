@@ -47,7 +47,7 @@ p = Pbind(
 	\dur, Pwhite(0.05, 0.5, inf).trace,
 	//\midinote, Pseq([60,65,67,73], inf).trace,
 	//\freq, Pseq([300, 250, 350], inf).trace,
-	\freq, Pexprand(50, 4000, inf).trace,
+	\freq, Pexprand(50, 400, inf).trace,
 ).play;
 )
 
@@ -69,7 +69,7 @@ p = Pbind(
 
 p.stop;
 
-// SOFT -> harmonics in place of freq -> Toaster, Dream Seq, Credits.
+// Still LOUD -> harmonics in place of freq -> Toaster, Dream Seq, Credits.
 (
 p = Pbind(
 	\type, \note,
@@ -86,24 +86,6 @@ p = Pbind(
 
 p.stop;
 
-//PDEF -> Adjustable while playing version
-
-(
-Pdef(
-    \sinepat,
-	Pbind(
-		\type, \note,
-	    \instrument, \sine,
-	    \dur, Pwhite(0.05, 0.5, inf),
-        \midinote, Pseq([29], inf).trace,
-	    \harmonic, Pexprand(1, 80, inf).round,
-	    \atk, Pwhite(2.0, 3.0, inf),
-	    \rel, Pwhite(5.0, 10.0, inf),
-	    \amp, Pkey(\harmonic).reciprocal * 0.3,
-	    \pan, Pwhite(-0.8, 0.8, inf),
-	);
-).play;
-)
 
 //// Buffers and manipulating them
 
@@ -173,7 +155,7 @@ Synth.new(\bufplay, [\buf, d[\l].choose.bufnum]);
 ////////////////////////////////MUSIC!!!!!!///////////////////////////////
 
 
-//keyboards Opening Credits at 1/10 dur
+////////keyboards Opening Credits at 1/10 dur//////
 (
 Pdef(
     \sinepat,
@@ -191,7 +173,7 @@ Pdef(
 ).play(quant:1.875);
 )
 
-//Drums Opening Credits at 1/10 dur
+///////Drums Opening Credits at 1/10 dur/////////////
 
 (Pdef(
 	\rhythm,
@@ -205,8 +187,26 @@ Pdef(
 	);
 ).play(quant:1.875);
 )
+////////////////////////////////TOASTER////////////////
+//PDEF -> Adjustable while playing version
 
-// Big Bass Drum Beat END CREDITS at 1/8 dur
+(
+Pdef(
+    \sinepat,
+	Pbind(
+		\type, \note,
+	    \instrument, \sine,
+	    \dur, Pwhite(0.05, 0.5, inf),
+        \midinote, Pseq([16], inf).trace,
+	    \harmonic, Pexprand(1, 80, inf).round,
+	    \atk, Pwhite(2.0, 3.0, inf),
+	    \rel, Pwhite(5.0, 10.0, inf),
+	    \amp, Pkey(\harmonic).reciprocal * 0.3,
+	    \pan, Pwhite(-0.8, 0.8, inf),
+	);
+).play;
+)
+//////////// Big Bass Drum Beat END CREDITS at 1/8 dur////////
 (Pdef(
 	\rhythm2,
 	Pbind(
