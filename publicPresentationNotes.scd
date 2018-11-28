@@ -54,7 +54,7 @@ b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
 }.play;
 )
 
-//higher faster, wierder
+//higher faster, weirder
 (
 { var trig, rate;
     trig = Impulse.kr(MouseX.kr(0.5, 10, 1));
