@@ -113,29 +113,6 @@ Pdef(
 Server.default.record;   ///Record
 Server.default.stopRecording;    ///Stop
 
-//Store
-~b0 = Buffer.read(s, );
-~b1 = Buffer.read(s, );
-~b2 = Buffer.read(s, );
-~b3 = Buffer.read(s, );
-~b4 = Buffer.read(s, );
-
-
-//Play
-
-~b0.play;//
-~b1.play;//
-~b2.play;//
-~b3.play;//
-~b4.play;//
-~b5.play;//
-~b6.play;//
-~b7.play;//
-~b8.play;//
-~b9.play;//
-~b10.play;//
-
-
 //Patterns of Buffers
 
 (
@@ -153,6 +130,7 @@ d.add(\drum -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCo
 )
 //test
 d[\drum].choose.play;
+d[\l].choose.play;
 
 (SynthDef.new(\sine, {
 	arg freq= 440, atk= 0.05, rel=0.45, amp=1, pan=0;
@@ -178,28 +156,30 @@ SynthDef.new(\bufplay,{
 Synth.new(\bufplay, [\buf, d[\l].choose.bufnum]);
 
 
-// Freaking madness!!! Prand more rhythmic than Pxrand here.
+// Recorded Harmonica.
 (Pdef(
 	\rhythm,
 	Pbind(
 		\instrument, \bufplay,
-		\dur, Pseq([1/16],inf),
-		\buf, Prand(d[\l],inf),
+		\dur, Pseq([1/8],inf),
+		\buf, Pxrand(d[\l],inf),
 		\rate, 1,
-		\amp, 0.5,
+		\amp, 0.05,
 		\stretch, 1.875,
 	);
-).play;
+).play(quant:1.875);
 )
 
+////////////////////////////////MUSIC!!!!!!///////////////////////////////
 
-//keyboards
+
+//keyboards Opening Credits at 1/10 dur
 (
 Pdef(
     \sinepat,
 	Pbind(
 	    \instrument, \sine,
-		\dur, Pseq([1/12], inf),
+		\dur, Pseq([1/10], inf),
 		\stretch, 1.875,
         \note, Pxrand([0,3,5,9,10,12], inf).trace,
 	    \atk, 0.005,
@@ -211,13 +191,13 @@ Pdef(
 ).play(quant:1.875);
 )
 
-//Drums
+//Drums Opening Credits at 1/10 dur
 
 (Pdef(
 	\rhythm,
 	Pbind(
 		\instrument, \bufplay,
-		\dur, Pseq([1/12],inf),
+		\dur, Pseq([1/10],inf),
 		\buf, Pxrand(d[\drum],inf),
 		\rate, Pexprand(3,4.25,inf),
 		\amp, Pseq([0.8, Pexprand(0.005,0.3,7)],inf),
@@ -226,5 +206,34 @@ Pdef(
 ).play(quant:1.875);
 )
 
-Buffer.freeAll;
+// Big Bass Drum Beat END CREDITS at 1/8 dur
+(Pdef(
+	\rhythm2,
+	Pbind(
+		\instrument, \bufplay,
+		\dur, Pseq([1/8],inf),
+		\buf, Pxrand(d[\drum],inf),
+		\rate, 1,
+		\amp, 0.25,
+		\stretch, 1.875,
+	);
+).play(quant:1.875);
+)
 
+//Drums 2 END CREDITS at 1/8 dur
+
+(Pdef(
+	\rhythm,
+	Pbind(
+		\instrument, \bufplay,
+		\dur, Pseq([1/8],inf),
+		\buf, Pxrand(d[\drum],inf),
+		\rate, Pexprand(3,4.25,inf),
+		\amp, Pseq([0.8, Pexprand(0.005,0.3,7)],inf),
+		\stretch, 1.875,
+	);
+).play(quant:1.875);
+)
+
+/////GAME OVER MAN
+Buffer.freeAll;
