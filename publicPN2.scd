@@ -130,7 +130,9 @@ SynthDef.new(\bufplay,{
 	arg buf=0, rate=1, amp=1;
 	var sig;
 	sig = PlayBuf.ar(2, buf, BufRateScale.ir(buf) * rate, doneAction:2);
+	sig = Mix(sig);
 	sig = sig * amp;
+	sig = Pan2.ar(sig, LFNoise2.kr(0.5));
 	Out.ar(0, sig);
 }).add;
 )
@@ -138,12 +140,12 @@ SynthDef.new(\bufplay,{
 Synth.new(\bufplay, [\buf, d[\l].choose.bufnum]);
 
 
-// Recorded Harmonica.
+// Recorded Harmonica. How to play w/ 2 channel output?
 (Pdef(
-	\rhythm,
+	\rhythm3,
 	Pbind(
 		\instrument, \bufplay,
-		\dur, Pseq([1/8],inf),
+		\dur, Pseq([1/16],inf),
 		\buf, Pxrand(d[\l],inf),
 		\rate, 1,
 		\amp, 0.05,
@@ -170,7 +172,7 @@ Pdef(
 	    \pan, Pwhite(-0.8, 0.8, inf),
 		\gtranspose, -2,
 	);
-).play(quant:1.875);
+).stop(quant:1.875);
 )
 
 ///////Drums Opening Credits at 1/10 dur/////////////
@@ -185,14 +187,14 @@ Pdef(
 		\amp, Pseq([0.8, Pexprand(0.005,0.3,7)],inf),
 		\stretch, 1.875,
 	);
-).play(quant:1.875);
+).stop(quant:1.875);
 )
 ////////////////////////////////TOASTER////////////////
 //PDEF -> Adjustable while playing version
 
 (
 Pdef(
-    \sinepat,
+    \sinepat2,
 	Pbind(
 		\type, \note,
 	    \instrument, \sine,
@@ -217,7 +219,7 @@ Pdef(
 		\amp, 0.25,
 		\stretch, 1.875,
 	);
-).play(quant:1.875);
+)play(quant:1.875);
 )
 
 //Drums 2 END CREDITS at 1/8 dur
