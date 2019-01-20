@@ -24,6 +24,8 @@ p = Pbind(
 
 p.stop;
 
+Server.default.record;   ///Record
+Server.default.stopRecording;    ///Stop
 
 // Pseq -> needs adjusting. Some sort of alarm.
 (
@@ -99,12 +101,32 @@ Server.default.stopRecording;    ///Stop
 
 (
 d = Dictionary.new;
-d.add(\l -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/Random Noises").entries.collect({
+d.add(\drum -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/Drum").entries.collect({
 	arg sf;
 	Buffer.read(s, sf.fullPath);
 });
 );
-d.add(\drum -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/Drum").entries.collect({
+d.add(\drum2 -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/Drum2").entries.collect({
+	arg sf;
+	Buffer.read(s, sf.fullPath);
+});
+);
+d.add(\drum3 -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/Drum3").entries.collect({
+	arg sf;
+	Buffer.read(s, sf.fullPath);
+});
+);
+d.add(\drum4 -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/Drum4").entries.collect({
+	arg sf;
+	Buffer.read(s, sf.fullPath);
+});
+);
+d.add(\drum5 -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/Drum5").entries.collect({
+	arg sf;
+	Buffer.read(s, sf.fullPath);
+});
+);
+d.add(\drum6 -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCollider/Recordings/Drum6").entries.collect({
 	arg sf;
 	Buffer.read(s, sf.fullPath);
 });
@@ -112,7 +134,8 @@ d.add(\drum -> PathName("C:/Users/ericw/OneDrive/Documents/SuperCollider/SuperCo
 )
 //test
 d[\drum].choose.play;
-d[\l].choose.play;
+d[\drum2].choose.play;
+d[\drum3].choose.play;
 
 (SynthDef.new(\sine, {
 	arg freq= 440, atk= 0.05, rel=0.45, amp=1, pan=0;
@@ -137,16 +160,16 @@ SynthDef.new(\bufplay,{
 }).add;
 )
  // test synthdef
-Synth.new(\bufplay, [\buf, d[\l].choose.bufnum]);
+Synth.new(\bufplay, [\buf, d[\drum].choose.bufnum]);
 
 
-// Recorded Harmonica. How to play w/ 2 channel output?
+
 (Pdef(
 	\rhythm3,
 	Pbind(
 		\instrument, \bufplay,
-		\dur, Pseq([1/16],inf),
-		\buf, Pxrand(d[\l],inf),
+		\dur, Pseq([1/10],inf),
+		\buf, Pxrand(d[\drum2],inf),
 		\rate, 1,
 		\amp, 0.05,
 		\stretch, 1.875,
@@ -172,10 +195,12 @@ Pdef(
 	    \pan, Pwhite(-0.8, 0.8, inf),
 		\gtranspose, -2,
 	);
-).stop(quant:1.875);
+).play(quant:1.875);
 )
 
 ///////Drums Opening Credits at 1/10 dur/////////////
+Server.default.record;   ///Record
+Server.default.stopRecording;    ///Stop
 
 (Pdef(
 	\rhythm,
@@ -187,7 +212,48 @@ Pdef(
 		\amp, Pseq([0.8, Pexprand(0.005,0.3,7)],inf),
 		\stretch, 1.875,
 	);
-).stop(quant:1.875);
+).play(quant:1.875);
+)
+
+
+(Pdef(
+	\rhythm2,
+	Pbind(
+		\instrument, \bufplay,
+		\dur, Pseq([1/],inf),
+		\buf, Pxrand(d[\drum2],inf),
+		\rate, 1,
+		\amp, 0.25,
+		\stretch, 1.875,
+	);
+).play(quant:1.875);
+)
+
+(Pdef(
+	\rhythmg,
+	Pbind(
+		\instrument, \bufplay,
+		\dur, Pseq([1/5],inf),
+		\buf, Pxrand(d[\drum5],inf),
+		\rate, 1,
+		\amp, 0.25,
+		\stretch, 1.875,
+	);
+).play(quant:1.875);
+)
+
+
+(Pdef(
+	\rhythm4,
+	Pbind(
+		\instrument, \bufplay,
+		\dur, Pseq([1/5],inf),
+		\buf, Pxrand(d[\drum6],inf),
+		\rate, 1,
+		\amp, 0.01,
+		\stretch, 1.875,
+	);
+).play(quant:1.875);
 )
 ////////////////////////////////TOASTER////////////////
 //PDEF -> Adjustable while playing version
@@ -198,7 +264,7 @@ Pdef(
 	Pbind(
 		\type, \note,
 	    \instrument, \sine,
-	    \dur, Pwhite(0.05, 0.5, inf),
+	    \dur, Pseq([1/5],inf),
         \midinote, Pseq([16], inf).trace,
 	    \harmonic, Pexprand(1, 80, inf).round,
 	    \atk, Pwhite(2.0, 3.0, inf),
@@ -213,13 +279,13 @@ Pdef(
 	\rhythm2,
 	Pbind(
 		\instrument, \bufplay,
-		\dur, Pseq([1/8],inf),
-		\buf, Pxrand(d[\drum],inf),
+		\dur, Pseq([1/5],inf),
+		\buf, Pxrand(d[\drum3],inf),
 		\rate, 1,
 		\amp, 0.25,
 		\stretch, 1.875,
 	);
-)play(quant:1.875);
+).play(quant:1.875);
 )
 
 //Drums 2 END CREDITS at 1/8 dur
@@ -229,7 +295,7 @@ Pdef(
 	Pbind(
 		\instrument, \bufplay,
 		\dur, Pseq([1/8],inf),
-		\buf, Pxrand(d[\drum],inf),
+		\buf, Pxrand(d[\drum3],inf),
 		\rate, Pexprand(3,4.25,inf),
 		\amp, Pseq([0.8, Pexprand(0.005,0.3,7)],inf),
 		\stretch, 1.875,
